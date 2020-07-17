@@ -27,7 +27,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = ['books.apps.BooksConfig',]
 
-THIRD_APPS = []
+THIRD_APPS = ['crispy_forms', 'crispy_tailwind',]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_APPS 
 
@@ -118,4 +118,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# CRISPY TAILWIND
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
