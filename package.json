@@ -1,0 +1,23 @@
+{
+  "name": "feldroy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tailwind": "tailwind build static/src/tailwind.css -o static/css/styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhou1925/writernout-clone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhou1925/writernout-clone/issues"
+  },
+  "homepage": "https://github.com/zhou1925/writernout-clone#readme",
+  "dependencies": {
+    "tailwindcss": "^1.5.1"
+  }
+}
