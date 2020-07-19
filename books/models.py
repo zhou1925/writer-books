@@ -25,9 +25,14 @@ class Book(models.Model):
         return self.title
 
 class Chapter(models.Model):
-    title = models.CharField("Title", max_length=250)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
+    title = models.CharField("Title of Chapter", max_length=250)
     body = models.TextField("Body")
 
+    def get_absolute_url(self):
+        return reverse(
+            "books:chapter_detail",
+            kwargs={"pk": self.pk, 'book_id': self.book_id})
 
     def __str__(self):
         return self.title

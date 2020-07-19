@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block content %}
+<div class="w-full max-w-xl mx-auto">
+    <form method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1 class="text-center font-bold ">{{ view.book.title }}</h1>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="inline-block align-baseline  bg-gray-700
+        font-bold text-sm text-white rounded py-2 px-2" 
+        type="submit">Create</button>
+    </form>
+
+  </div>
+{% endblock content %}
