@@ -1,13 +1,15 @@
 from functools import cached_property
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import DetailView, UpdateView, View, ListView, CreateView
 
 from asgiref.sync import sync_to_async
 
 from .models import Book, Chapter
-
+from .forms import ChapterCreateForm
 
 class AsyncViewMixin:
     async def __call__(self):
@@ -39,7 +41,7 @@ class MyBookList(LoginRequiredMixin, ListView):
     model = Book
     
     def get_objects(self, queryset=None):
-        return Book.objects.filter(creator=self.request.user)
+        return Book.objects.filter(book_creator=self.request.user)
 
 
 class ChapterDetailView(LoginRequiredMixin, DetailView):
@@ -48,7 +50,7 @@ class ChapterDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         try:
             return Chapter.objects.get(
-                book_creator=self.request.user,
+                book__creator=self.request.user,
                 book_id=self.kwargs['book_id'],
                 id=self.kwargs['pk']
             )
@@ -98,4 +100,26 @@ class ChapterCreateView(LoginRequiredMixin, CreateView):
         chapter.book = self.book
         chapter.save()
         return chapter.get_absolute_url()
+
+
+def chapterCreate(request, book_id):
+    book = get_object_or_404(Book, id=book_id, creator=request.user)
+
+    new_chapter = None
+    if request.method == 'POST':
+        chapter_form = ChapterCreateForm(data=request.POST)
+        if chapter_form.is_valid():
+            new_chapter = chapter_form.save(commit=False)
+            new_chapter.book = book
+
+            new_chapter.save()
+            return redirect(reverse('books:detail', kwargs={'pk': book_id}))
+
+    else:
+        chapter_form = ChapterCreateForm()
+
+    return render(request, 'books/chapter_form.html', {'book':book, 'chapter_form': chapter_form})
+
+    
+
 

@@ -3,19 +3,78 @@
 
 
 {% block content %}
+    <!--Container-->
+    <div class="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-2">
+        <div class="w-full lg:w-1/5 px-6 text-xl text-gray-800 leading-normal">
 
-<div>
-    {{ book.title }}
-</div>
+            <div class="w-full sticky inset-0 hidden max-h-64 lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 my-2 lg:my-0 border border-gray-400 lg:border-transparent bg-white shadow lg:shadow-none lg:bg-transparent z-20" style="top:6em;" id="menu-content">
+                <ul class="list-reset py-2 md:py-0">
+                    {% for chapter in book.chapter_set.all  %}
+                    
+                    <li class="py-1 md:my-2 hover:bg-orange-100 lg:hover:bg-transparent border-l-4 border-transparent font-bold">
+                        <a href="{{ chapter.get_absolute_url }}" class="block pl-4 align-middle text-gray-900 no-underline hover:text-blue-600">
+                            <span class="pb-1 md:pb-0 text-sm">{{ chapter.title }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="py-1 md:my-2 hover:bg-orange-100 lg:hover:bg-transparent border-l-4 border-transparent font-bold">
+                        <a class="block  text-sm pl-4 align-middle text-white no-underline hover:text-white
+                        bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+                        href="{% url 'books:chapter_create' book.id %}">Create Chapter</a></li>
+                    <li class="py-1 md:my-2 hover:bg-orange-100 lg:hover:bg-transparent border-l-4 border-transparent font-bold">
+                        <a class="block  text-sm pl-4 align-middle text-white no-underline hover:text-white
+                        bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+                        href="{% url 'books:update' book.id %}"> Update Book</a></li>
+                </ul>
+            </div>
+        </div>
 
-<div>
-    {{ book.description|linebreaksbr }}
-</div>
+        <!--Section container-->
+        <section class="w-full lg:w-4/5">
 
-<div>
-    <a href="{% url 'books:update' book.id %}">Update</a>
-    <a href="{% url 'books:chapter_create' book.id %}">Create Chapter</a>
-</div>
+            <!--Title-->
+            <h1 class="flex items-center font-sans font-bold break-normal text-gray-900 px-2 text-xl mt-12 lg:mt-0 md:text-5xl">
+				{{ book.title }}
+            </h1>
+            <hr class="bg-gray-300 my-2">
+
+            <h2 class="font-sans font-bold break-normal text-gray-800 px-2 pb-2 text-2xl">Book description</h2>
+            
+            <!--Card-->
+            <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
+                <p class="font-light">{{ book.description|linebreaksbr }}</p>
+            </div>
+            <!--/Card-->
+
+            <!--divider-->
+            <hr class="bg-gray-300 my-3">
+
+            
+            {% for chapter in book.chapter_set.all  %}
+            <!--Title-->
+            <h2 id='{{ chapter.title }}' class="font-sans font-bold break-normal text-gray-700 px-2 pb-4 text-xl">{{chapter.title}}</h2>
+            
+            <!--Card-->
+            <div class="p-8 mt-3 lg:mt-0 leading-normal rounded shadow bg-white">
+                <p>{{ chapter.body }}</p>
+            </div>
+            <!--/Card-->
+            
+            <!--divider-->
+            <hr class="bg-gray-300 my-2">
+            {% endfor %}
+
+        </section>
+        <!--/Section container-->
+
+        <!--Back link -->
+        <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-4 py-24 mb-12">
+          <span class="text-base text-blue-600 font-bold">&lt;</span> <a href="{% url 'books:list' %}" class="text-base md:text-sm text-blue-600 font-bold no-underline hover:underline">My Books</a>
+         </div>
+
+      </div>
+      <!--/container-->
+
 
 
 {% endblock content %}
