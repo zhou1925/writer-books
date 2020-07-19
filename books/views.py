@@ -43,6 +43,18 @@ class MyBookList(LoginRequiredMixin, ListView):
     def get_objects(self, queryset=None):
         return Book.objects.filter(book_creator=self.request.user)
 
+# need to finish this class
+class BookCreateView(LoginRequiredMixin, CreateView):
+    model = Book
+    fields = ('title', 'description', 'contributors')
+
+    def get_object(self):
+        return Book.objects.get(
+                book_creator=self.request.user,
+                title=self.kwargs['title'],
+                description=self.kwargs['description'],
+                contributors=self.kwargs['contributors'])
+
 
 class ChapterDetailView(LoginRequiredMixin, DetailView):
     model = Chapter
@@ -50,7 +62,7 @@ class ChapterDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         try:
             return Chapter.objects.get(
-                book__creator=self.request.user,
+                book_creator=self.request.user,
                 book_id=self.kwargs['book_id'],
                 id=self.kwargs['pk']
             )

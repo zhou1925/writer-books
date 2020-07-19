@@ -16,10 +16,10 @@ urlpatterns = [
         route='mine/',
         view=views.MyBookList.as_view(),
         name='list'),
-    #path(
-    #    route='<int:book_id>/chapter/create/',
-    #    view=views.ChapterCreateView.as_view(),
-    #    name='chapter_create'),
+    path(
+        route='create/',
+        view=views.BookCreateView.as_view(),
+        name='create_book'),
     path(
         route='<int:book_id>/chapter/<int:id>/update/',
         view=views.ChapterUpdateView.as_view(),
