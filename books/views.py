@@ -9,7 +9,7 @@ from django.views.generic import DetailView, UpdateView, View, ListView, CreateV
 from asgiref.sync import sync_to_async
 
 from .models import Book, Chapter
-from .forms import ChapterCreateForm
+from .forms import ChapterCreateForm, ChapterEditForm
 
 class AsyncViewMixin:
     async def __call__(self):
@@ -62,7 +62,7 @@ class ChapterDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         try:
             return Chapter.objects.get(
-                book_creator=self.request.user,
+                #book_creator=self.request.user,
                 book_id=self.kwargs['book_id'],
                 id=self.kwargs['pk']
             )
@@ -126,12 +126,26 @@ def chapterCreate(request, book_id):
 
             new_chapter.save()
             return redirect(reverse('books:detail', kwargs={'pk': book_id}))
-
     else:
         chapter_form = ChapterCreateForm()
 
     return render(request, 'books/chapter_form.html', {'book':book, 'chapter_form': chapter_form})
 
+
+def chapterEdit(request, book_id, chapter_id):
+    chapter = get_object_or_404(
+        Chapter, id=chapter_id, book=book_id
+    )
     
+    if request.method == 'POST':
+        chapter_form = ChapterEditForm(data=request.POST)
+        if chapter_form.is_valid():
+            chapter_form = ChapterEditForm(data=request.POST, instance=chapter)
+            chapter_form.save()
+            return redirect(reverse('books:detail', kwargs={'pk': book_id}))
+    else:
+        chapter_form = ChapterEditForm(instance=chapter)
+
+    return render(request, 'books/chapter_edit.html', {'chapter_form': chapter_form} )
 
 

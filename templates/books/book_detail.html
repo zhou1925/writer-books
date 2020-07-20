@@ -56,9 +56,13 @@
             
             <!--Card-->
             <div class="p-8 mt-3 lg:mt-0 leading-normal rounded shadow bg-white">
-                <p>{{ chapter.body }}</p>
+                <p class="pb-4">{{ chapter.body }}</p>
+                <!--/Card-->
+                <a href="{% url 'books:chapter_edit' book.id chapter.id %}"
+                class="text-sm text-white bg-gray-700 hover:bg-gray-900 align-middle py-2 px-2 rounded">
+                    <span>Edit chapter</span>
+                </a>
             </div>
-            <!--/Card-->
             
             <!--divider-->
             <hr class="bg-gray-300 my-2">

@@ -25,11 +25,14 @@ urlpatterns = [
         view=views.ChapterUpdateView.as_view(),
         name='chapter_update'),
     path(
-        route='<int:book_id>/chapter/<int:pk>/',
+        route='<int:book_id>/chapter/<int:pk>/detail/',
         view=views.ChapterDetailView.as_view(),
         name='chapter_detail'),
     path(
         route='<int:book_id>/chapter/create/',
         view=views.chapterCreate,
-        name='chapter_create')
+        name='chapter_create'),
+    path(route='<int:book_id>/chapter/<int:chapter_id>/edit/',
+        view=views.chapterEdit,
+        name='chapter_edit')
 ]
