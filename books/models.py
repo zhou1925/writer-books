@@ -1,3 +1,4 @@
+#from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -17,6 +18,8 @@ class Book(models.Model):
     contributors = models.ManyToManyField(
         User, related_name="book_authors", through=ContributorType
     )
+
+    #chapters = ArrayField(models.IntegerField(), null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("books:detail", kwargs={"pk": self.pk})
